@@ -11,7 +11,6 @@ object PalindromeFinder {
     else input == input.reverse
   }
 
-
   private def findAllPalindromes(input: String): List[PalindromeMatch] = {
 
     def removeInnerPalindromes(allMatches: List[PalindromeMatch], acc: List[PalindromeMatch]): List[PalindromeMatch] = allMatches match {
@@ -38,5 +37,13 @@ object PalindromeFinder {
       .toList
       .sortWith(_.length > _.length)
       .take(3)
+  }
+}
+
+object PalindromePrinter {
+  def print(list: List[PalindromeMatch]): Unit = {
+    list.foreach(p =>
+      println(s"Text: ${p.palindrome}, Index: ${p.index}, Length: ${p.length}")
+    )
   }
 }

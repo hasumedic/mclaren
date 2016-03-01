@@ -6,14 +6,33 @@ case class PalindromeMatch(palindrome: String, index: Int) {
 
 object PalindromeFinder {
 
+  type Matches = List[PalindromeMatch]
+
+  def find(input: String): Matches = {
+    findPalindromes(input)
+      .groupBy(_.palindrome)
+      .map(_._2.head)
+      .toList
+      .sortWith(_.length > _.length)
+      .take(3)
+  }
+
   private def isPalindrome(input: String): Boolean = {
     if (input.length < 2) false
     else input == input.reverse
   }
 
-  private def findAllPalindromes(input: String): List[PalindromeMatch] = {
+  private def findPalindromes(input: String): Matches = {
 
-    def removeInnerPalindromes(allMatches: List[PalindromeMatch], acc: List[PalindromeMatch]): List[PalindromeMatch] = allMatches match {
+    def findAllPalindromes(input: String): Matches = {
+      (for {
+        start <- input.indices
+        end <- start to input.length
+        if isPalindrome(input.substring(start, end))
+      } yield PalindromeMatch(input.substring(start, end), start)).toList
+    }
+
+    def removeInnerPalindromes(allMatches: Matches, acc: Matches): Matches = allMatches match {
       case Nil => acc
       case x :: xs => {
         if (acc.exists(p => p.palindrome.contains(x.palindrome))) removeInnerPalindromes(xs, acc)
@@ -21,22 +40,7 @@ object PalindromeFinder {
       }
     }
 
-    val allMatches = (for {
-      start <- input.indices
-      end <- start to input.length
-      if isPalindrome(input.substring(start, end))
-    } yield PalindromeMatch(input.substring(start, end), start)).toList
-
-    removeInnerPalindromes(allMatches, List())
-  }
-
-  def find(input: String): List[PalindromeMatch] = {
-    findAllPalindromes(input)
-      .groupBy(_.palindrome)
-      .map(_._2.head)
-      .toList
-      .sortWith(_.length > _.length)
-      .take(3)
+    removeInnerPalindromes(findAllPalindromes(input), List())
   }
 }
 

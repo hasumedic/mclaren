@@ -1,7 +1,5 @@
 package com.mclaren
 
-import scala.collection.immutable.IndexedSeq
-
 case class PalindromeMatch(palindrome: String, index: Int) {
   def length: Int = palindrome.length
 }
@@ -13,12 +11,24 @@ object PalindromeFinder {
     else input == input.reverse
   }
 
-  private def findAllPalindromes(input: String): IndexedSeq[PalindromeMatch] = {
-    for {
+
+  private def findAllPalindromes(input: String): List[PalindromeMatch] = {
+
+    def removeInnerPalindromes(allMatches: List[PalindromeMatch], acc: List[PalindromeMatch]): List[PalindromeMatch] = allMatches match {
+      case Nil => acc
+      case x :: xs => {
+        if (acc.exists(p => p.palindrome.contains(x.palindrome))) removeInnerPalindromes(xs, acc)
+        else removeInnerPalindromes(xs, x :: acc)
+      }
+    }
+
+    val allMatches = (for {
       start <- input.indices
       end <- start to input.length
       if isPalindrome(input.substring(start, end))
-    } yield PalindromeMatch(input.substring(start, end), start)
+    } yield PalindromeMatch(input.substring(start, end), start)).toList
+
+    removeInnerPalindromes(allMatches, List())
   }
 
   def find(input: String): List[PalindromeMatch] = {
@@ -27,5 +37,6 @@ object PalindromeFinder {
       .map(_._2.head)
       .toList
       .sortWith(_.length > _.length)
+      .take(3)
   }
 }

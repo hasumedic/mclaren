@@ -26,17 +26,22 @@ class PalindromeFinderSpec extends FlatSpec with Matchers {
   }
 
   it should "return the list of found palindromes ordered by length in a single palindrome" in {
-    val expected = List(PalindromeMatch("qweewq", 0), PalindromeMatch("weew", 1), PalindromeMatch("ee", 2))
-    PalindromeFinder.find("qweewq") should be(expected)
+    val expected = List(PalindromeMatch("qweewq", 0), PalindromeMatch("rttr", 6), PalindromeMatch("yy", 10))
+    PalindromeFinder.find("qweewqrttryy") should be(expected)
   }
 
-  it should "return the list of found palindromes ordere by length in different palindromes" in {
-    val expected = List(PalindromeMatch("erre", 3), PalindromeMatch("qwq", 0), PalindromeMatch("rr", 4))
+  it should "return the list of found palindromes ordered by length in different palindromes" in {
+    val expected = List(PalindromeMatch("erre", 3), PalindromeMatch("qwq", 0))
     PalindromeFinder.find("qwqerre") should be(expected)
   }
 
   it should "return unique palindromes" in {
     val expected = List(PalindromeMatch("rtr", 0))
     PalindromeFinder.find("rtrmkjrtr") should be(expected)
+  }
+
+  it should "return only the first three elements of the collection of palindromes" in {
+    val expected = List(PalindromeMatch("hijkllkjih", 23), PalindromeMatch("defggfed", 13), PalindromeMatch("abccba", 5))
+    PalindromeFinder.find("sqrrqabccbatudefggfedvwhijkllkjihxymnnmzpop") should be(expected)
   }
 }

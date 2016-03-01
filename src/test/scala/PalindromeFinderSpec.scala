@@ -6,8 +6,12 @@ class PalindromeFinderSpec extends FlatSpec with Matchers {
     PalindromeFinder.find("") should be (List())
   }
 
-  "PalindromeFinder" should "find a palindrome when the whole word is" in {
+  it should "find a palindrome when the whole word is" in {
     val expected = PalindromeMatch("lol", 1)
     PalindromeFinder.find("lol") should be (List(expected))
+  }
+
+  it should "find no palindromes when the are none in the input string" in {
+    PalindromeFinder.find("boo") should be (List())
   }
 }

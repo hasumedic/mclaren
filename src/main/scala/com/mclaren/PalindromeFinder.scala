@@ -21,8 +21,11 @@ object PalindromeFinder {
     } yield PalindromeMatch(input.substring(start, end), start)
   }
 
-  def find(input: String): IndexedSeq[PalindromeMatch] = {
+  def find(input: String): List[PalindromeMatch] = {
     findAllPalindromes(input)
+      .groupBy(_.palindrome)
+      .map(_._2.head)
+      .toList
       .sortWith(_.length > _.length)
   }
 }

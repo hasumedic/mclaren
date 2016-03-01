@@ -34,4 +34,9 @@ class PalindromeFinderSpec extends FlatSpec with Matchers {
     val expected = List(PalindromeMatch("erre", 3), PalindromeMatch("qwq", 0), PalindromeMatch("rr", 4))
     PalindromeFinder.find("qwqerre") should be(expected)
   }
+
+  it should "return unique palindromes" in {
+    val expected = List(PalindromeMatch("rtr", 0))
+    PalindromeFinder.find("rtrmkjrtr") should be(expected)
+  }
 }

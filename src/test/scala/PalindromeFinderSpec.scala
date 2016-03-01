@@ -19,4 +19,19 @@ class PalindromeFinderSpec extends FlatSpec with Matchers {
     val expected = PalindromeMatch("lol", 2)
     PalindromeFinder.find("zxlolcv") should be(List(expected))
   }
+
+  it should "find more than one palindrome within an input string" in {
+    val expected = List(PalindromeMatch("lol", 2), PalindromeMatch("pup", 7))
+    PalindromeFinder.find("zxlolcvpupbn") should be(expected)
+  }
+
+  it should "return the list of found palindromes ordered by length in a single palindrome" in {
+    val expected = List(PalindromeMatch("qweewq", 0), PalindromeMatch("weew", 1), PalindromeMatch("ee", 2))
+    PalindromeFinder.find("qweewq") should be(expected)
+  }
+
+  it should "return the list of found palindromes ordere by length in different palindromes" in {
+    val expected = List(PalindromeMatch("erre", 3), PalindromeMatch("qwq", 0), PalindromeMatch("rr", 4))
+    PalindromeFinder.find("qwqerre") should be(expected)
+  }
 }

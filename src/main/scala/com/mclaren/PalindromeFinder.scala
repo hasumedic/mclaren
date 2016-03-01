@@ -2,7 +2,9 @@ package com.mclaren
 
 import scala.collection.immutable.IndexedSeq
 
-case class PalindromeMatch(palindrome: String, index: Int)
+case class PalindromeMatch(palindrome: String, index: Int) {
+  def length: Int = palindrome.length
+}
 
 object PalindromeFinder {
 
@@ -21,5 +23,6 @@ object PalindromeFinder {
 
   def find(input: String): IndexedSeq[PalindromeMatch] = {
     findAllPalindromes(input)
+      .sortWith(_.length > _.length)
   }
 }
